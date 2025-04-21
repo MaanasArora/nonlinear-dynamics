@@ -1,28 +1,33 @@
+import numpy as np
+
+
 class FirstOrderOde:
-    def evaluate(self, t: float, y: float) -> float:
+    def evaluate(self, t: np.ndarray[float], y: np.ndarray[float]) -> np.ndarray[float]:
         """
         Evaluates the first-order ODE dy/dt = f(t, y).
 
         Parameters:
-        t (float): The independent variable (time).
-        y (float): The dependent variable (state).
+        t (np.ndarray[float]): The independent variable (time).
+        y (np.ndarray[float]): The dependent variable (state).
 
         Returns:
-        float: The derivative of y with respect to t.
+        np.ndarray[float]: The rate of change of the dependent variable.
         """
         raise NotImplementedError("Subclasses should implement this method.")
 
-    def step_euler(self, t: float, y: float, dt: float) -> float:
+    def step_euler(
+        self, t: np.ndarray[float], y: np.ndarray[float], dt: float
+    ) -> np.ndarray[float]:
         """
         Performs a single Euler step to update the state.
 
         Parameters:
-        t (float): The current time.
-        y (float): The current state.
-        dt (float): The time step.
+        t (np.ndarray[float]): The independent variable (time).
+        y (np.ndarray[float]): The dependent variable (state).
+        dt (float): The time step for the Euler method.
 
         Returns:
-        float: The updated state after the Euler step.
+        np.ndarray[float]: The updated state after the Euler step.
         """
         return y + self.evaluate(t, y) * dt
 
@@ -39,15 +44,15 @@ class LogisticGrowth(FirstOrderOde):
         self.r = r
         self.K = K
 
-    def evaluate(self, t: float, y: float) -> float:
+    def evaluate(self, t: np.ndarray[float], y: np.ndarray[float]) -> np.ndarray[float]:
         """
         Evaluates the logistic growth model.
 
         Parameters:
-        t (float): The independent variable (time).
-        y (float): The dependent variable (population size).
+        t (np.ndarray[float]): The independent variable (time).
+        y (np.ndarray[float]): The dependent variable (population).
 
         Returns:
-        float: The rate of change of the population size.
+        np.ndarray[float]: The rate of change of the population.
         """
         return self.r * y * (1 - y / self.K)
